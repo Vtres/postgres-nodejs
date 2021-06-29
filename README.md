@@ -12,9 +12,7 @@ Visite: *[NodeJS](https://https://nodejs.org/en/)*.
  ![Yarn](/src/img/yarn.png)
 
 O **Yarn** é um gerenciador de pacotes para aplicar comandos prontos ao código de uma aplicação. 
-O que reforça essa ideia é o fato de a ferramenta utilizar também os bancos de dados tanto do NPM quanto do Bower, outro importante e conhecido gerenciador de pacotes de códigos.
-
-Visite: *[Yarn](https://yarnpkg.com/)*.
+O que reforça essa ideia é o fato de a ferramenta utilizar também os bancos de dados tanto do NPM quanto do Bower, outro importante e conhecido gerenciador de pacotes de códigos. Visite: *[Yarn](https://yarnpkg.com/)*.
 
 ---
 - ### Nodemon
@@ -24,6 +22,7 @@ O **nodemon** é um utilitário de interface de linha de comando (CLI) desenvolv
 
 - ### Express
 ![Express](/src/img/express.png)
+
 O **ExpressJs** é um framework para Node.js que fornece recursos mínimos para construção de servidores web. Foi lançado como software livre e de código aberto sob a Licença MIT. É um dos mais populares frameworks para servidores em Node.js.
 Visite: *[Express](https://expressjs.com/pt-br/)*.
 
@@ -31,6 +30,7 @@ Visite: *[Express](https://expressjs.com/pt-br/)*.
 
 - ### Insomnia
 ![Insomnia](/src/img/insomnia.jpg)
+
  **Insomnia** é um cliente REST API poderoso com gerenciamento de cookies, variáveis ​​de ambiente, geração de código e autenticação para Mac, Window e Linux.
  Visite: *[Insomnia](https://insomnia.rest/download)*.
 
