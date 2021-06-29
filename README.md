@@ -1,6 +1,6 @@
 # API com PostgreSQL
 
-## 1. Tecnologias
+## 1. Tecnologias Utilizadas
 - ### NodeJs
 ![NodeJs](/src/img/node.png)
 
@@ -41,3 +41,11 @@ Visite: *[Express](https://expressjs.com/pt-br/)*.
 Visite: *[PosgreSQL](https://www.postgresql.org/)*.
 
 ---
+## 2. Comandos Terminal
+
+Para criar a estrutura dessa API. 
+`yarn init -y`
+`yarn add nodemon -D`
+`yarn add express`
+`yarn add pg`
+`yarn add dotenv`
