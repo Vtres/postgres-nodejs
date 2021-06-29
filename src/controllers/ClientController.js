@@ -24,4 +24,23 @@ ClientController.post('', async (req,res)=>{
     }
 })
 
+ClientController.delete('/:id', async (req,res)=>{
+    const {id} = req.params
+
+    try {
+        const existsClient = await ClientService.existsById(id)
+        if(existsClient){
+            try {
+                ClientService.destroy(id)
+                res.json()
+            } catch (error) {
+                res.status(500).json({error: 'ClientService.destroy() is not working'})
+            }
+        }else{
+            res.status(404).json({error: `ID: ${id} not found`})
+        }
+    } catch (error) {
+        res.status(500).json({error: 'ClientService.existsById() is not working'})
+    }
+})
 module.exports = ClientController

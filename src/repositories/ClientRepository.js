@@ -15,6 +15,20 @@ const save = async ({name, surname,email,senha,nick_name}) =>{
 
     return response.rows[0]
 }
+
+const findById = async (id) =>{
+    const response = await Database.query(`
+        select user_id from client where user_id = $1
+    `, [id])
+
+    return response.rows[0]
+}
+
+const remove = async (id) =>{
+    Database.query(`
+        delete from client where user_id = $1
+    `, [id])
+}
 module.exports = {
-    findAll, save
+    findAll, save, findById, remove
 }
