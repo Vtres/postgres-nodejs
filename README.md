@@ -54,13 +54,9 @@ Visite: *[GitHub](https://github.com/)*.
 
 Para criar a estrutura dessa API. 
 - `yarn init -y`
-
 - `yarn add nodemon -D`
-
 - `yarn add express`
-
 - `yarn add pg`
-
 - `yarn add dotenv`
 
 ## 3. CRUD com table Client
