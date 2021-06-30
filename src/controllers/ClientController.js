@@ -43,4 +43,27 @@ ClientController.delete('/:id', async (req,res)=>{
         res.status(500).json({error: 'ClientService.existsById() is not working'})
     }
 })
+ClientController.put('/:id', async (req,res)=>{
+    const {id} = req.params
+    const {name, surname,email,senha,nick_name} = req.body
+
+    if(!name || !surname || !email || !senha || !nick_name){
+        return res.status(400).json({error:"Há campos não informados"})
+    }
+    
+    try {
+        const existsClient = await ClientService.existsById(id)
+        if(existsClient){
+            try {
+                res.json(await ClientService.update({id, name, surname,email,senha,nick_name}))
+            } catch (error) {
+                res.status(500).json({error: 'ClientService.destroy() is not working'})
+            }
+        }else{
+            res.status(404).json({error: `ID: ${id} not found`})
+        }
+    } catch (error) {
+        res.status(500).json({error: 'ClientService.existsById() is not working'})
+    }
+})
 module.exports = ClientController

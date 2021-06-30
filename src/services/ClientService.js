@@ -17,6 +17,10 @@ const existsById = async(id) => {
 const destroy = async(id) =>{
     ClientRepository.remove(id)   
 }
+
+const update = async({id, name, surname,email,senha,nick_name}) =>{
+    return await ClientRepository.update({id,name, surname,email,senha,nick_name})
+}
 module.exports = {
-    index, store, existsById, destroy
+    index, store, existsById, destroy, update
 }

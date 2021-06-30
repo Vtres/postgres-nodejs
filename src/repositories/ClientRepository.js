@@ -29,6 +29,16 @@ const remove = async (id) =>{
         delete from client where user_id = $1
     `, [id])
 }
+
+const update = async({id,name, surname,email,senha,nick_name}) =>{
+    const response = await Database.query(`
+        update client set name = $1, surname=$2, email=$3, senha=$4, nick_name=$5, date=current_timestamp
+        where user_id = $6 returning *
+    `,[
+        name, surname, email, senha, nick_name, id
+    ])
+    return response.rows[0]
+}
 module.exports = {
-    findAll, save, findById, remove
+    findAll, save, findById, remove,update
 }
