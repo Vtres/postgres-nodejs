@@ -6,6 +6,13 @@ const findAll = async () =>{
 
     return response.rows
 }
+const findClientById = async (id) =>{
+    const response = await Database.query(`
+        SELECT * FROM client where user_id = $1
+    `,[id])
+
+    return response.rows
+}
 const save = async ({name, surname,email,senha,nick_name}) =>{
     const response = await Database.query(`
         INSERT INTO client(
@@ -40,5 +47,5 @@ const update = async({id,name, surname,email,senha,nick_name}) =>{
     return response.rows[0]
 }
 module.exports = {
-    findAll, save, findById, remove,update
+    findAll, save, findById, remove,update,findClientById
 }

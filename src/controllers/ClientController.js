@@ -10,6 +10,26 @@ ClientController.get('', async (req,res)=>{
     }
 })
 
+ClientController.get('/:id', async (req,res)=>{
+    const {id} = req.params
+
+    try {
+        const existsClient = await ClientService.existsById(id)
+        if(existsClient){
+            try {
+                res.status(200).json(await ClientService.show(id))
+                res.json()
+            } catch (error) {
+                res.status(500).json({error: 'ClientService.show() is not working'})
+            }
+        }else{
+            res.status(404).json({error: `ID: ${id} not found`})
+        }
+    } catch (error) {
+        res.status(500).json({error: 'ClientService.existsById() is not working'})
+    }
+})
+
 ClientController.post('', async (req,res)=>{
     const {name, surname,email,senha,nick_name} = req.body
 
