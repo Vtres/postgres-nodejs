@@ -31,14 +31,14 @@ ClientController.get('/:id', async (req,res)=>{
 })
 
 ClientController.post('', async (req,res)=>{
-    const {name, surname,email,senha,nick_name} = req.body
+    const {name, surname,email,senha} = req.body
 
-    if(!name || !surname || !email || !senha || !nick_name){
+    if(!name || !surname || !email || !senha){
         return res.status(400).json({error:"Há campos não informados"})
     }
 
     try {
-        res.status(201).json(await ClientService.store({name, surname,email,senha,nick_name}))
+        res.status(201).json(await ClientService.store({name, surname,email,senha}))
     } catch (error) {
         res.status(500).json({error: 'ClientService.store() is not working'})
     }

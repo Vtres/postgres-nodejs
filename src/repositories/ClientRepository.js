@@ -13,12 +13,12 @@ const findClientById = async (id) =>{
 
     return response.rows
 }
-const save = async ({name, surname,email,senha,nick_name}) =>{
+const save = async ({name, surname,email,senha}) =>{
     const response = await Database.query(`
         INSERT INTO client(
             name, surname, email,senha,nick_name,date
         )values($1,$2,$3,$4,$5,current_timestamp) returning *
-    `, [name,surname,email,senha,nick_name])
+    `, [name,surname,email,senha,''])
 
     return response.rows[0]
 }

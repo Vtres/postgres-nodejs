@@ -4,8 +4,8 @@ const index = async () =>{
     return await ClientRepository.findAll()
 }
 
-const store = async ({name, surname,email,senha,nick_name}) => {
-    return await ClientRepository.save({name, surname,email,senha,nick_name})
+const store = async ({name, surname,email,senha}) => {
+    return await ClientRepository.save({name, surname,email,senha})
 }
 
 const existsById = async(id) => {
