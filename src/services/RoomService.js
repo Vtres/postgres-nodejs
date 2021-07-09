@@ -10,7 +10,6 @@ const create = async ({name, description_room,topic}) => {
 
 const existsById = async(id) => {
     const response = await RoomRepository.findById(id)
-
     return response ? true : false
 }
 

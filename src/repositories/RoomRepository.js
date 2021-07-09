@@ -35,7 +35,6 @@ const findByName = async (name) =>{
     const response = await Database.query(`
         select name,room_id from room where name = $1
     `, [name])
-
     return response.rows[0]
 }
 
