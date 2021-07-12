@@ -13,13 +13,13 @@ const findClientById = async (id) =>{
 
     return response.rows
 }
-const save = async ({name, surname,email,senha}) =>{
+const save = async ({name, surname,email,senha,active}) =>{
+
     const response = await Database.query(`
         INSERT INTO client(
-            name, surname, email,senha,nick_name,date
-        )values($1,$2,$3,$4,$5,current_timestamp) returning *
-    `, [name,surname,email,senha,''])
-
+            name, surname, email,senha,nick_name,active,date
+        )values($1,$2,$3,$4,$5,$6,current_timestamp) returning *
+    `,[name,surname,email,senha,'',active])
     return response.rows[0]
 }
 
@@ -46,6 +46,13 @@ const update = async({id,name, surname,email,senha,nick_name}) =>{
     ])
     return response.rows[0]
 }
+
+const findClientbyEmail = async(email) =>{
+    const response = await Database.query(`
+        select user_id from client where email = $1 LIMIT 1
+    `,[email])
+    return response.rows
+}
 module.exports = {
-    findAll, save, findById, remove,update,findClientById
+    findAll, save, findById, remove,update,findClientById,findClientbyEmail
 }

@@ -101,16 +101,6 @@ RoomController.put('/:id', async (req, res) => {
             }else{
                 res.status(404).json({ error: `Name: ${name} já existe` })
             }
-            // if (existsNameRoom.room_id == id || existsNameRoom === undefined) {
-            //     console.log("entrei no undefiend")
-            //     try {
-            //         res.json(await RoomService.update({ id, name, description_room, topic }))
-            //     } catch (error) {
-            //         res.status(500).json({ error: 'RoomService.create() is not working' })
-            //     }
-            // } else {
-               
-            // }
         } else {
             res.status(404).json({ error: `ID: ${id} not found` })
         }
