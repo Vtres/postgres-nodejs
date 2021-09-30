@@ -33,6 +33,17 @@ const existsEmail = async(email) =>{
     const response = await ClientRepository.findClientbyEmail(email)
     return response.length > 0 ? true : false
 }
+
+const findUserByEmail = async(email)=>{
+    let user = await ClientRepository.findUserByEmail(email)
+    if(user){
+        return user
+    }
+}
+
+const validatePassword = async(a,b)=>{
+    return await bcrypt.compare(a,b)
+}
 module.exports = {
-    index, store, existsById, destroy, update,show,existsEmail
+    index, store, existsById, destroy, update, show, existsEmail, findUserByEmail, validatePassword
 }

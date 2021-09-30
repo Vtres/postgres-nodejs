@@ -62,6 +62,7 @@ Para criar a estrutura dessa API.
 - **`yarn add dotenv`**
 - **`yarn add cors`**
 - **`yarn add bcryptjs`**
+- **`yarn add jsonwebtoken`**
 
 ## 3. Requests API
 **`GET`** - Listagem de usuários

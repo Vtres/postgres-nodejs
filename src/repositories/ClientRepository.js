@@ -53,6 +53,16 @@ const findClientbyEmail = async(email) =>{
     `,[email])
     return response.rows
 }
+
+const findUserByEmail = async(email) =>{
+    const response = await Database.query(`
+        select * from client where email = $1 LIMIT 1
+    `,[
+        email
+    ])
+
+    return response.rows[0]
+}
 module.exports = {
-    findAll, save, findById, remove,update,findClientById,findClientbyEmail
+    findAll, save, findById, remove,update,findClientById,findClientbyEmail,findUserByEmail
 }
