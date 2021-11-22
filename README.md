@@ -63,6 +63,7 @@ Para criar a estrutura dessa API.
 - **`yarn add cors`**
 - **`yarn add bcryptjs`**
 - **`yarn add jsonwebtoken`**
+- **`npm install --save multer`**
 
 ## 3. Requests API
 **`GET`** - Listagem de usuários

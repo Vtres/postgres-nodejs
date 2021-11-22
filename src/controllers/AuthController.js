@@ -18,7 +18,7 @@ AuthController.post('/signin', async (req, res) => {
 
     try {
         const user = await ClientService.findUserByEmail(email)
-        console.log(user)
+        console.log(user.user_id)
         const passwordValidated = await ClientService.validatePassword(senha, user.senha)
         if (!passwordValidated) {
             return res.status(401).json({ error: 'Senha inválida' })
@@ -31,7 +31,7 @@ AuthController.post('/signin', async (req, res) => {
         try {
             const { id } = user
             const token = jwt.sign({ id }, SECRET_KEY, { expiresIn: 60 * 60 * 24 })
-            res.json(token)
+            res.json([token, user.user_id])
         } catch (error) {
             console.log(error);
             res.status(500).json({ error: "jwt.sign() is not working" })
