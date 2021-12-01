@@ -12,6 +12,15 @@ const index = async()=>{
     return await PostRepository.findAll()
 }
 
+const existsById = async(id)=>{
+    const response = await PostRepository.findById(id)
+    return response ? true : false
+}
+
+const show = async(id)=>{
+    return await PostRepository.findPostById(id)
+}
+
 module.exports = {
-   create,createResultId,index
+   create,createResultId,index,existsById,show
 }

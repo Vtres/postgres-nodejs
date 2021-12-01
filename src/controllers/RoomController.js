@@ -34,10 +34,9 @@ RoomController.get('/:id', async (req, res) => {
 
 RoomController.post('', async (req, res) => {
     // nome, result, id_content,
-    const { name, description_room, nome, result, id_content, id_user, topic } = req.body
+    const { name, description_room, nome, id_content, id_user, topic } = req.body
     // console.log( name, description_room, nome, id_content,id_user, topic)
     var topics = [];
-
     try {
         if (name) {
             // if(nome || result){
@@ -48,33 +47,47 @@ RoomController.post('', async (req, res) => {
             //         res.status(500).json({ error: 'FileService.create() is not working' })
             //     }
             // }
+
             if (topic) {
 
-                topic.map(async (i) => {
-                    console.log(i)
+                // for (var i = 0; i < topic.length; i++) {
+                //     console.log(topic[i])
+                //     var existTopicId = await TopicService.existsName(topic[i])
+                //     console.log('id selecionado', existTopicId)
+                //     if (existTopicId) {
+                //         console.log('achou')
+                //         topics.push(existTopicId)
+                //     } else {
+                //         try {
+                //             var createTopicId = await TopicService.create(topic[i])
+                //             topics.push(createTopicId)
+                //             console.log('criou')
+                //         } catch (error) {
+                //             res.status(500).json({ error: 'TopicService.create() is not working' })
+                //         }
+                //     }
+                // }
+                const aux = topic.map(async (i) => {
                     var existTopicId = await TopicService.existsName(i)
                     if (existTopicId) {
-                        console.log('achou')
                         topics.push(existTopicId)
                     } else {
                         try {
-                            (async () => {
-                                var createTopicId = await TopicService.create(i)
-                                topics.push(createTopicId)
-                                console.log('criou')
-                            })();
+                            var createTopicId = await TopicService.create(i)
+                            topics.push(createTopicId)
                         } catch (error) {
                             res.status(500).json({ error: 'TopicService.create() is not working' })
                         }
                     }
-                    console.log('retornou')
                 })
-                res.status(201).json(topics)
+                await Promise.all(aux)
+                res.status(201).json(topics)   
+                
             }
 
         }
     } catch (error) {
-        res.status(500).json({ error: 'Name em branco' })
+        res.status(500).json({ error: error })
     }
 
 

@@ -36,5 +36,23 @@ PostController.get('', async (req,res)=>{
         res.status(500).json({error: 'PostService.index() is not working'})
     }
 })
+PostController.get('/:id', async (req,res)=>{
+    const { id } = req.params
+    try {
+        const existsPost = await PostService.existsById(id)
+        if (existsPost) {
+            try {
+                res.status(200).json(await PostService.show(id))
+                res.json()
+            } catch (error) {
+                res.status(500).json({ error: 'PostService.show() is not working' })
+            }
+        } else {
+            res.status(404).json({ error: `ID: ${id} not found` })
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'PostService.existsById() is not working' })
+    }
+})
 module.exports = PostController
 

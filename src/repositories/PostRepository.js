@@ -21,13 +21,27 @@ const createPostResultId = async (id_user, title, description) =>{
 const findAll = async () =>{
     const response = await Database.query(`
         SELECT * FROM post p
-        WHERE Extract('Month' From p.date_post) = (Extract('Month' From Now())) 
-        AND Extract('year' From p.date_post) = (Extract('Year' From Now()));
+        WHERE p.date_post>= ('01/'||to_char(current_date,'mm/yyyy'))::date - interval '1 month'
     `)
 
     return response.rows
 }
 
+const findById = async (id) =>{
+    const response = await Database.query(`
+        select post_id from post where post_id = $1
+    `, [id])
+    return response.rows[0]
+}
+
+const findPostById = async(id)=>{
+    const response = await Database.query(`
+        SELECT * FROM post where post_id = $1
+    `,[id])
+
+    return response.rows
+}
+
 module.exports = {
-    save,createPostResultId,findAll
+    save,createPostResultId,findAll,findById,findPostById
 }
