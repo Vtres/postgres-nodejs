@@ -2,6 +2,9 @@ const { Router } = require('express');
 const RoomService = require('../services/RoomService')
 const FileService = require('../services/FileService')
 const TopicService = require('../services/TopicService')
+const ClientRoomService = require('../services/ClientRoomService')
+const RoomTopicService = require('../services/RoomTopicService');
+const { compare } = require('bcryptjs');
 
 const RoomController = Router()
 RoomController.get('', async (req, res) => {
@@ -34,39 +37,14 @@ RoomController.get('/:id', async (req, res) => {
 
 RoomController.post('', async (req, res) => {
     // nome, result, id_content,
-    const { name, description_room, nome, id_content, id_user, topic } = req.body
+    const { name, description_room, nome, result, id_user, id_public, topic } = req.body
     // console.log( name, description_room, nome, id_content,id_user, topic)
     var topics = [];
+    var id_file;
+    var id_room;
     try {
         if (name) {
-            // if(nome || result){
-            //     try {
-            //         const fileNew = await FileService.create({ nome, result, id_content})
-            //         res.status(201).json(fileNew.id)
-            //     } catch (error) {
-            //         res.status(500).json({ error: 'FileService.create() is not working' })
-            //     }
-            // }
-
             if (topic) {
-
-                // for (var i = 0; i < topic.length; i++) {
-                //     console.log(topic[i])
-                //     var existTopicId = await TopicService.existsName(topic[i])
-                //     console.log('id selecionado', existTopicId)
-                //     if (existTopicId) {
-                //         console.log('achou')
-                //         topics.push(existTopicId)
-                //     } else {
-                //         try {
-                //             var createTopicId = await TopicService.create(topic[i])
-                //             topics.push(createTopicId)
-                //             console.log('criou')
-                //         } catch (error) {
-                //             res.status(500).json({ error: 'TopicService.create() is not working' })
-                //         }
-                //     }
-                // }
                 const aux = topic.map(async (i) => {
                     var existTopicId = await TopicService.existsName(i)
                     if (existTopicId) {
@@ -81,10 +59,69 @@ RoomController.post('', async (req, res) => {
                     }
                 })
                 await Promise.all(aux)
-                res.status(201).json(topics)   
-                
+                // topic contem os ids => res.status(201).json(topics)   
+
+
+            }
+            if (nome && result) {
+                try {
+                    var id_content = null
+                    id_file = await FileService.create({ nome, result, id_content })
+                } catch (error) {
+                    res.status(500).json({ error: 'FileService.create() is not working' })
+                }
+            }
+            if (id_file) {
+                // Se usuário quis uma img para a sala
+                try {
+                    const id = id_file.id
+                    id_room = await RoomService.create({ name, description_room, id, id_public })
+                } catch (error) {
+                    res.status(500).json({ error: 'RoomService.create() is not working' })
+                }
+
+
+            } else {
+                try {
+                    const no_img = null;
+                    id_room = await RoomService.create({ name, description_room, no_img, id_public })
+                } catch (error) {
+                    res.status(500).json({ error: 'RoomService.create() is not working' })
+                }
             }
 
+            if (id_user) {
+                try {
+                    const type = 'D'
+                    const sucess = await ClientRoomService.save({ id_user, id_room, type })
+                } catch (error) {
+                    res.status(500).json({ error: 'ClientRoomService.save() is not working' })
+                }
+            } else {
+                res.status(500).json({ error: 'Sem usuário definido' })
+            }
+            // legacoes com utras tabelas agora 
+            if (topics) {
+                var cont = 1; 
+                const aux = topics.map(async (i) => {
+                    try {
+                        var roomTopic = await RoomTopicService.save(id_room.room_id, i.topic_id)
+                    } catch (error) {
+                        res.status(500).json({ error: 'RoomTopicSerice.save() is not working' })
+                    }
+                })
+                await Promise.all(aux)
+                
+                    res.status(200).json({message:'OK'}) 
+                    res.json()
+                
+                
+            }else{
+                res.status(200).json({message:'OK'}) 
+                res.json()
+            }
+        } else {
+            return res.status(400).json('Erro nos dados enviados, tente novamente!')
         }
     } catch (error) {
         res.status(500).json({ error: error })
@@ -146,7 +183,6 @@ RoomController.put('/:id', async (req, res) => {
         const existsRoomId = await RoomService.existsById(id)
         if (existsRoomId) {
             const existsNameRoom = await RoomService.existsByName(name)
-            console.log(existsNameRoom);
             if (existsNameRoom === undefined) {
                 try {
                     res.json(await RoomService.update({ id, name, description_room, topic }))

@@ -18,6 +18,13 @@ const fileSavePost = async(nome, result, id_post) =>{
     return response.rows[0]
 }
 
+// const fileByIdClient = async(id) =>{
+//     const response = await Database.query(`
+       
+//     `,[id])
+//     return response.rows[0]
+// }
+
 module.exports = {
     save,fileSavePost
 }

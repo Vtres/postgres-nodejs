@@ -17,4 +17,13 @@ FileController.post('', async (req, res) => {
     }
 })
 
+FileController.get('/:id', async (req, res) => {
+    const {id} = req.params
+    try {
+        res.status(201).json(await FileService.fileClient(id))
+    } catch (error) {
+        res.status(500).json({ error: 'FileService.create() is not working' })
+    }
+})
+
 module.exports = FileController

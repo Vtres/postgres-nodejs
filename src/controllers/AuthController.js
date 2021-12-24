@@ -17,11 +17,10 @@ AuthController.post('/signin', async (req, res) => {
     }
 
     try {
-        const user = await ClientService.findUserByEmail(email)
-        console.log(user.user_id)
-        const passwordValidated = await ClientService.validatePassword(senha, user.senha)
+        const userInfo = await ClientService.findUserByEmail(email)
+        const passwordValidated = await ClientService.validatePassword(senha, userInfo.senha)
         if (!passwordValidated) {
-            return res.status(401).json({ error: 'Senha inválida' })
+            return res.json({signin_error: 'Senha inválida' })
         }
 
         const SECRET_KEY = process.env.SECRET_KEY
@@ -29,9 +28,9 @@ AuthController.post('/signin', async (req, res) => {
             return res.status(401).json({ error: 'Environment SECRET_KEY is empty' })
         }
         try {
-            const { id } = user
+            const  id  = userInfo.user_id
             const token = jwt.sign({ id }, SECRET_KEY, { expiresIn: 60 * 60 * 24 })
-            res.json([token, user.user_id])
+            res.json([token, userInfo.user_id])
         } catch (error) {
             console.log(error);
             res.status(500).json({ error: "jwt.sign() is not working" })
@@ -51,17 +50,35 @@ AuthController.post('/check-token', async (req, res) => {
         return res.status(401).json({ error: 'Environment SECRET_KEY is empty' })
     }
 
-    try {
-        if (token) {
-            jwt.verify(token,SECRET_KEY)
-            ? res.json({status: true})
-            : res.json({status: false})
-        } else {
-            res.json({status: false})
+    if(token){
+        try {
+            const tokenVerified = jwt.verify(token, SECRET_KEY)
+            if(tokenVerified && tokenVerified.id){
+                return res.json({status_token:true})
+            }else{
+                return res.json({status_token:false, status_error: 'Não autorizado com esse token inválido'})
+            }
+        } catch (error) {
+            if(error && error.name === 'JsonWebTokenError'){
+                return res.json({status_token:false, status_error: 'Não autorizado com esse token inválido'})
+            }else if(error && error.name === 'TokenExpiredError'){
+                return res.json({status_token:false, status_error: 'Não autorizado com esse token expirado'})
+            }
         }
-    } catch (error) {
-        return res.status(500).json({error: error})
+    }else{
+        return res.json({status_token:false, status_error: 'Não autorizado com esse token inválido'})
     }
+    // try {
+    //     if (token) {
+    //         jwt.verify(token,SECRET_KEY)
+    //         ? res.json({status: true})
+    //         : res.json({status: false})
+    //     } else {
+    //         res.json({status: false})
+    //     }
+    // } catch (error) {
+    //     return res.status(500).json({error: error})
+    // }
 })
 
 AuthController.post('/addUser', async (req, res) => {

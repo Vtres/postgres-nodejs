@@ -4,8 +4,8 @@ const index = async () =>{
     return await RoomRepository.findAll()
 }
 
-const create = async ({name, description_room,topic}) => {
-    return await RoomRepository.save({name, description_room,topic})
+const create = async ({name, description_room,id,id_public}) => {
+    return await RoomRepository.save({name, description_room,id,id_public})
 }
 
 const existsById = async(id) => {
@@ -34,6 +34,9 @@ const update = async({id, name, description_room,topic}) =>{
 const show = async(id) =>{
     return await RoomRepository.findRoomById(id)
 }
+const listAllDataRoom = async(id_room)=>{
+    return await RoomRepository.listAllDataRoom(id_room)
+}
 module.exports = {
-    index, create, existsById, erase, update,show,existsByName,existsName
+    index, create, existsById, erase, update,show,existsByName,existsName,listAllDataRoom
 }

@@ -1,7 +1,7 @@
 const CommentRepository = require('../repositories/CommentRepository')
 
-const createComment = async(message,id_post)=>{
-    return await CommentRepository.save(message,id_post)
+const createComment = async(message,id_post,id_client)=>{
+    return await CommentRepository.save(message,id_post,id_client)
 }
 
 const showById = async(id)=>{

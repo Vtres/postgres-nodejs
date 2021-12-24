@@ -42,8 +42,14 @@ PostController.get('/:id', async (req,res)=>{
         const existsPost = await PostService.existsById(id)
         if (existsPost) {
             try {
-                res.status(200).json(await PostService.show(id))
-                res.json()
+                const response = await PostService.show(id)
+                if(response){
+                    res.status(200).json(response)
+                    res.json()
+                }else{
+                    res.status(404).json({ error: `Post não encontrado` })
+                }
+                
             } catch (error) {
                 res.status(500).json({ error: 'PostService.show() is not working' })
             }

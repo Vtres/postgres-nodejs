@@ -44,6 +44,15 @@ const findUserByEmail = async(email)=>{
 const validatePassword = async(a,b)=>{
     return await bcrypt.compare(a,b)
 }
+
+const savefileClient = async(user_id,idFile)=>{
+    const response = await ClientRepository.saveFileClient(user_id,idFile)
+    return response;
+}
+const roomClient = async(user_id)=>{
+    const response = await ClientRepository.showRoomClient(user_id)
+    return response;
+}
 module.exports = {
-    index, store, existsById, destroy, update, show, existsEmail, findUserByEmail, validatePassword
+    index, store, existsById, destroy, update, show, existsEmail, findUserByEmail, validatePassword,savefileClient,roomClient
 }
