@@ -18,6 +18,13 @@ const fileSavePost = async(nome, result, id_post) =>{
     return response.rows[0]
 }
 
+const searchFileById = async(id)=>{
+    const response = await Database.query(`
+        SELECT * FROM files WHERE id = $1
+    `,[id])
+    return response.rows[0]
+}
+
 // const fileByIdClient = async(id) =>{
 //     const response = await Database.query(`
        
@@ -26,5 +33,5 @@ const fileSavePost = async(nome, result, id_post) =>{
 // }
 
 module.exports = {
-    save,fileSavePost
+    save,fileSavePost,searchFileById
 }

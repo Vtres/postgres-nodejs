@@ -16,6 +16,10 @@ const fileCreatePost = async (nome, result, id_post) => {
 //     const fileInsert =  await FileRepository.fileByIdClient(id)
 //     return fileInsert
 // }
+const searchFileById = async(id)=>{
+    const response = await FileRepository.searchFileById(id)
+    return response
+}
 module.exports = {
-   create,fileCreatePost
+   create,fileCreatePost,searchFileById
 }

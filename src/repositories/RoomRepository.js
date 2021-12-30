@@ -10,14 +10,13 @@ const findRoomById = async (id) => {
     const response = await Database.query(`
         SELECT * FROM room where room_id = $1
     `, [id])
-
-    return response.rows
+    return response.rows[0]
 }
 const save = async ({ name, description_room, id, id_public }) => {
     const response = await Database.query(`
         INSERT INTO room(
-            name, description_room,file_id,id_public
-        )values($1,$2,$3,$4) returning *
+            name, description_room,file_id,id_public,date
+        )values($1,$2,$3,$4,current_timestamp) returning *
     `, [name, description_room, id, id_public])
 
     return response.rows[0]

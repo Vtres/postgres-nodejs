@@ -17,6 +17,12 @@ const roomClient = async(user_id)=>{
     return response.rows;
 }
 
+const remove = async (id) => {
+    Database.query(`
+        delete from client_room where id_room = $1
+    `, [id])
+}
+
 module.exports = {
-    save,roomClient
+    save,roomClient,remove
 }

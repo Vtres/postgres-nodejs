@@ -9,6 +9,10 @@ const roomClient = async(user_id)=>{
     return await ClientRooomRepository.roomClient(user_id)
 }
 
+const erase = async(id) =>{
+    ClientRooomRepository.remove(id)   
+}
+
 module.exports = {
-    save,roomClient
+    save,roomClient,erase
 }

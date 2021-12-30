@@ -12,6 +12,14 @@ const create = async(name)=>{
     return await TopicRepository.save(name)
 }
 
+const list = async () =>{
+    return await TopicRepository.listRoomTopic()
+}
+
+const listRoomById = async (id)=>{
+    return await TopicRepository.listRoomById(id)
+}
+
 module.exports = {
-    index, existsName, create
+    index, existsName, create, list,listRoomById
 }

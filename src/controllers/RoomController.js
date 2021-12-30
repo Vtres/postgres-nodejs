@@ -159,7 +159,9 @@ RoomController.delete('/:id', async (req, res) => {
         const existsRoom = await RoomService.existsById(id)
         if (existsRoom) {
             try {
+                ClientRoomService.erase(id)
                 RoomService.erase(id)
+                RoomTopicService.erase(id)
                 res.json()
             } catch (error) {
                 res.status(500).json({ error: 'RoomService.erase() is not working' })
