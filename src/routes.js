@@ -6,7 +6,9 @@ const AuthController = require('./controllers/AuthController')
 const PostController = require('./controllers/PostController')
 const FileController=require('./controllers/FileController')
 const CommentController=require('./controllers/CommentController')
-const {checkAuth} = require('./controllers/InterceptorController')
+const {checkAuth} = require('./controllers/InterceptorController');
+const ClassController = require('./controllers/ClassController');
+const ContentController = require('./controllers/ContentController')
 const controllers = express();
 
 controllers.use('/client', checkAuth('USER'), ClientController)
@@ -15,6 +17,8 @@ controllers.use('/topic', TopicController)
 controllers.use('/file', FileController)
 controllers.use('/post', PostController)
 controllers.use('/comment', CommentController)
+controllers.use('/class', ClassController)
+controllers.use('/content', ContentController)
 controllers.use('/auth', AuthController)
 
 
