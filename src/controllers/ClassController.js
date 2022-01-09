@@ -22,7 +22,7 @@ ClassController.get('/:id', async (req, res) => {
         const response = await ClassService.showById(id)
         if (response) {
             res.status(200).json(response)
-            res.json()
+            // res.json()
         } else {
             res.status(404).json({ error: `Post não encontrado` })
         }

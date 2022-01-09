@@ -32,6 +32,13 @@ const searchFileById = async(id)=>{
 //     return response.rows[0]
 // }
 
+const filebyContentId = async(id)=>{
+    const response = await Database.query(`
+        SELECT * FROM files WHERE id_contents = $1
+    `,[id])
+    return response.rows
+}
+
 module.exports = {
-    save,fileSavePost,searchFileById
+    save,fileSavePost,searchFileById,filebyContentId
 }
