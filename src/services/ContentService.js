@@ -19,6 +19,10 @@ const returnIdContentByIdClass = async(id)=>{
     return await ContentRepository.returnIdContentByIdClass(id)
 }
 
+const destroy = async(id)=>{
+    ContentRepository.destroy(id)
+}
+
 module.exports = {
-    create,list,existContentByClassId,update,returnIdContentByIdClass
+    create,list,existContentByClassId,update,returnIdContentByIdClass,destroy
 }

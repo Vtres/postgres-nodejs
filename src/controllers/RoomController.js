@@ -17,13 +17,25 @@ RoomController.get('', async (req, res) => {
 
 RoomController.get('/:id', async (req, res) => {
     const { id } = req.params
-
+    var file=[]
     try {
         const existsClient = await RoomService.existsById(id)
         if (existsClient) {
             try {
-                res.status(200).json(await RoomService.show(id))
-                res.json()
+                const room = await RoomService.show(id)
+                if(room){
+                    if(room.file_id){
+                        try {
+                            const infoFile = FileService.searchFileById(room.file_id)
+                            if(infoFile){
+                                file.push(infoFile)
+                            }
+                        } catch (error) {
+                            res.status(500).json({ error: 'FileService.searchFileById() is not working' })
+                        }
+                    }
+                    // achar o dono da sala
+                }
             } catch (error) {
                 res.status(500).json({ error: 'RoomService.show() is not working' })
             }

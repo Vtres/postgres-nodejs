@@ -20,12 +20,32 @@ TopicController.get('/room/:id', async (req, res) => {
         if (room_id) {
             const aux = room_id.map(async (data) => {
                 try {
-                    const dadosRoom = await RoomService.show(data.id_room)
-                    if (dadosRoom) {
-                        if (dadosRoom.file_id) {
-                            try {
-                                const dadosFile = await FileService.searchFileById(dadosRoom.file_id)
-                                if (dadosFile) {
+                    const id_dono_room = await RoomService.dono(data.id_room)
+                    if (id_dono_room) {
+                        try {
+                            const dadosRoom = await RoomService.show(data.id_room)
+                            if (dadosRoom) {
+                                if (dadosRoom.file_id) {
+                                    try {
+                                        const dadosFile = await FileService.searchFileById(dadosRoom.file_id)
+                                        if (dadosFile) {
+
+                                            allInfo.push({
+                                                "room_id": dadosRoom.room_id,
+                                                "name": dadosRoom.name,
+                                                "description_room": dadosRoom.description_room,
+                                                "file_id": dadosRoom.file_id,
+                                                "id_public": dadosRoom.id_public,
+                                                "date": dadosRoom.date,
+                                                "nome": dadosFile.nome,
+                                                "result": dadosFile.result,
+                                                "id_dono": id_dono_room.id_client
+                                            })
+                                        }
+                                    } catch (error) {
+                                        res.status(500).json({ error: 'FileService.searchFileById() is not working' })
+                                    }
+                                } else {
                                     allInfo.push({
                                         "room_id": dadosRoom.room_id,
                                         "name": dadosRoom.name,
@@ -33,30 +53,20 @@ TopicController.get('/room/:id', async (req, res) => {
                                         "file_id": dadosRoom.file_id,
                                         "id_public": dadosRoom.id_public,
                                         "date": dadosRoom.date,
-                                        "nome": dadosFile.nome,
-                                        "result": dadosFile.result
+                                        "nome": null,
+                                        "result": null,
+                                        "id_dono": id_dono_room.id_client
                                     })
                                 }
-                            } catch (error) {
-                                res.status(500).json({ error: 'FileService.searchFileById() is not working' })
+
                             }
-                        } else {
-                            allInfo.push({
-                                "room_id": dadosRoom.room_id,
-                                "name": dadosRoom.name,
-                                "description_room": dadosRoom.description_room,
-                                "file_id": dadosRoom.file_id,
-                                "id_public": dadosRoom.id_public,
-                                "date": dadosRoom.date,
-                                "nome": null,
-                                "result": null
-                            })
+                        } catch (error) {
+
                         }
-                       
+
                     }
-                   
                 } catch (error) {
-                    res.status(500).json({ error: 'RoomService.show() is not working' })
+                    res.status(500).json({ error: 'RoomService.dono() is not working' })
                 }
             })
             await Promise.all(aux)

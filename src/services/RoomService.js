@@ -37,6 +37,10 @@ const show = async(id) =>{
 const listAllDataRoom = async(id_room)=>{
     return await RoomRepository.listAllDataRoom(id_room)
 }
+
+const dono = async(id_room)=>{
+    return await RoomRepository.dono(id_room)
+}
 module.exports = {
-    index, create, existsById, erase, update,show,existsByName,existsName,listAllDataRoom
+    index, create, existsById, erase, update,show,existsByName,existsName,listAllDataRoom,dono
 }

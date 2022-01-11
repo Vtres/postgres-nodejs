@@ -1,7 +1,6 @@
 const Database = require('../config/Database')
 
 const save = async (title,id_room) =>{
-    console.log(title, id_room)
     const response = await Database.query(`
         INSERT INTO class(
             title,date_class,id_room

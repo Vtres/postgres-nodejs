@@ -61,6 +61,13 @@ const update = async ({ id, name, description_room, topic }) => {
     return response.rows[0]
 }
 
+const dono = async (id_room) => {
+    const response = await Database.query(`
+        select id_client from client_room where id_room = $1 and type='D'
+    `,[id_room])
+    return response.rows[0]
+}
+
 const listAllDataRoom = async (id_room) => {
     const response = await Database.query(`
         select 
@@ -76,9 +83,9 @@ const listAllDataRoom = async (id_room) => {
         from room r
         left join files f on r.file_id = f.id 
         where room_id = $1
-   `,[id_room])
-   return response.rows
+   `, [id_room])
+    return response.rows
 }
 module.exports = {
-    findAll, save, findById, remove, update, findRoomById, findByName, findName,listAllDataRoom
+    findAll, save, findById, remove, update, findRoomById, findByName, findName, listAllDataRoom,dono
 }

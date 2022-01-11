@@ -21,14 +21,13 @@ ContentController.get('/files/:id', async (req, res) => {
     try {
 
         const id_content = await ContentService.returnIdContentByIdClass(id)
-        console.log(id_content[0].contents_id)
-        if(id_content){
+        if (id_content) {
             try {
                 res.status(201).json(await FileService.filebyContentId(id_content[0].contents_id))
             } catch (error) {
                 res.status(500).json({ error: 'FileService.filebyContentId() is not working' })
             }
-        }else{
+        } else {
             res.status(401).json({ error: `id do conteudo: ${id_content[0].contents_id} não encontrado}` })
         }
 
@@ -65,7 +64,6 @@ ContentController.post('', async (req, res) => {
             const infoContent = await ContentService.list(id_class)
             if (infoContent) {
                 dados = infoContent.description_contents + text
-                console.log(dados);
                 try {
                     res.json(await ContentService.update(dados, id_class))
                 } catch (error) {
@@ -99,9 +97,8 @@ ContentController.post('/files', async (req, res) => {
             try {
                 // res.status(201).json(await FileService.create(text, id_class))
                 var text = null;
-                console.log('else')
                 const createContent = await ContentService.create(text, id_class)
-                if(createContent){
+                if (createContent) {
                     try {
                         var nome = nameFile
                         var id_content = createContent.contents_id
@@ -109,7 +106,7 @@ ContentController.post('/files', async (req, res) => {
                     } catch (error) {
                         res.status(500).json({ error: 'FileService.create() is not working' })
                     }
-                }else{
+                } else {
                     res.status(500).json({ error: 'ContentService.create() is not working and Class dont exist' })
                 }
             } catch (error) {
@@ -118,6 +115,17 @@ ContentController.post('/files', async (req, res) => {
         }
     } catch (error) {
         res.status(500).json({ error: 'ContentService.existContentByClassId() is not working' });
+    }
+})
+
+ContentController.delete('/:id', async (req, res) => {
+    const { id } = req.params
+
+    try {
+        ContentService.destroy(id)
+        res.json()
+    } catch (error) {
+        res.status(500).json({ error: 'ContentController.destroy() is not working' })
     }
 })
 

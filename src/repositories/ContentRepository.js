@@ -41,7 +41,13 @@ const returnIdContentByIdClass = async(id)=>{
     return response.rows
 }
 
+const destroy=async(id)=>{
+    Database.query(`
+        delete from files where id = $1
+    `, [id])
+}
+
 module.exports = {
-    create,list,existContentByClassId,update,returnIdContentByIdClass
+    create,list,existContentByClassId,update,returnIdContentByIdClass,destroy
 }
     
