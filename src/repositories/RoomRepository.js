@@ -86,6 +86,14 @@ const listAllDataRoom = async (id_room) => {
    `, [id_room])
     return response.rows
 }
+
+const checkType = async(id_user, id_room)=>{
+    const response = await Database.query(`
+        select type from client_room where id_client = $1 and id_room= $2
+    `,[id_user, id_room])
+    return response.rows[0];
+}
+
 module.exports = {
-    findAll, save, findById, remove, update, findRoomById, findByName, findName, listAllDataRoom,dono
+    findAll, save, findById, remove, update, findRoomById, findByName, findName, listAllDataRoom,dono,checkType
 }

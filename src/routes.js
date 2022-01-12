@@ -9,6 +9,8 @@ const CommentController=require('./controllers/CommentController')
 const {checkAuth} = require('./controllers/InterceptorController');
 const ClassController = require('./controllers/ClassController');
 const ContentController = require('./controllers/ContentController')
+const ClientRoomController = require('./controllers/ClientRoomController')
+
 const controllers = express();
 
 controllers.use('/client', checkAuth('USER'), ClientController)
@@ -19,6 +21,7 @@ controllers.use('/post', PostController)
 controllers.use('/comment', CommentController)
 controllers.use('/class', ClassController)
 controllers.use('/content', ContentController)
+controllers.use('/clientRoom/', ClientRoomController)
 controllers.use('/auth', AuthController)
 
 

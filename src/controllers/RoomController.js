@@ -17,24 +17,41 @@ RoomController.get('', async (req, res) => {
 
 RoomController.get('/:id', async (req, res) => {
     const { id } = req.params
-    var file=[]
+    var infoFile
+    var obj = []
     try {
         const existsClient = await RoomService.existsById(id)
         if (existsClient) {
             try {
                 const room = await RoomService.show(id)
-                if(room){
-                    if(room.file_id){
+                if (room) {
+                    if (room.file_id) {
                         try {
-                            const infoFile = FileService.searchFileById(room.file_id)
-                            if(infoFile){
-                                file.push(infoFile)
-                            }
+                            infoFile = await FileService.searchFileById(room.file_id)
                         } catch (error) {
                             res.status(500).json({ error: 'FileService.searchFileById() is not working' })
                         }
                     }
-                    // achar o dono da sala
+                    // achar o dono da sala 
+                    try {
+                        const dono = await RoomService.dono(room.room_id)
+                        if (dono) {
+                            obj.push({
+                                "room_id": room.room_id,
+                                "name": room.name,
+                                "description_room": room.description_room,
+                                "file_id": room.file_id,
+                                "id_public": room.id_public,
+                                "date": room.date,
+                                "nome": infoFile.nome,
+                                "result": infoFile.result,
+                                "dono": dono.id_client
+                            })
+                        }
+                        res.json(obj)
+                    } catch (error) {
+                        res.status(500).json({ error: 'RoomService.dono() is not working' })
+                    }
                 }
             } catch (error) {
                 res.status(500).json({ error: 'RoomService.show() is not working' })
@@ -105,16 +122,16 @@ RoomController.post('', async (req, res) => {
             if (id_user) {
                 try {
                     const type = 'D'
-                    const sucess = await ClientRoomService.save({ id_user, id_room, type })
+                    const sucess = await ClientRoomService.save({id_user, id_room, type})
                 } catch (error) {
                     res.status(500).json({ error: 'ClientRoomService.save() is not working' })
                 }
             } else {
                 res.status(500).json({ error: 'Sem usuário definido' })
             }
-            // legacoes com utras tabelas agora 
+            // ligacoes com outras tabelas agora 
             if (topics) {
-                var cont = 1; 
+                var cont = 1;
                 const aux = topics.map(async (i) => {
                     try {
                         var roomTopic = await RoomTopicService.save(id_room.room_id, i.topic_id)
@@ -123,13 +140,13 @@ RoomController.post('', async (req, res) => {
                     }
                 })
                 await Promise.all(aux)
-                
-                    res.status(200).json({message:'OK'}) 
-                    res.json()
-                
-                
-            }else{
-                res.status(200).json({message:'OK'}) 
+
+                res.status(200).json({ message: 'OK' })
+                res.json()
+
+
+            } else {
+                res.status(200).json({ message: 'OK' })
                 res.json()
             }
         } else {
@@ -218,5 +235,31 @@ RoomController.put('/:id', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: 'RoomService.existsById() is not working' })
     }
+})
+
+
+RoomController.post('/join', async (req, res) => {
+    const { id_user, id_room } = req.body
+    var user_id = id_user
+    var room_id = id_room
+    var type = "U";
+    const typeUser = await RoomService.checkType(id_user, id_room)
+    if (typeUser==undefined) {
+        try {            
+            var final = await ClientRoomService.saveTypeUser(user_id,room_id,type)
+            res.json("Inscrito com sucesso!")
+        } catch (error) {
+            res.status(500).json({ error: 'ClientRoomService.save() is not working' })
+        }
+    } else if (typeUser.type == 'D') {
+        res.json("Você é o dono dessa sala")
+    } else if (typeUser.type == 'U') {
+        res.json("Você já está inscrito nessa sala")
+    }
+
+
+
+
+
 })
 module.exports = RoomController

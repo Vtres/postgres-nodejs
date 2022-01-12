@@ -41,6 +41,9 @@ const listAllDataRoom = async(id_room)=>{
 const dono = async(id_room)=>{
     return await RoomRepository.dono(id_room)
 }
+const checkType = async(id_user, id_room)=>{
+    return await RoomRepository.checkType(id_user, id_room)
+}
 module.exports = {
-    index, create, existsById, erase, update,show,existsByName,existsName,listAllDataRoom,dono
+    index, create, existsById, erase, update,show,existsByName,existsName,listAllDataRoom,dono,checkType
 }
