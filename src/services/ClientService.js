@@ -21,8 +21,8 @@ const destroy = async(id) =>{
     ClientRepository.remove(id)   
 }
 
-const update = async({id, name, surname,email,senha,nick_name}) =>{
-    return await ClientRepository.update({id,name, surname,email,senha,nick_name})
+const update = async({ id, name, surname, email, id_file }) =>{
+    return await ClientRepository.update({ id, name, surname, email, id_file })
 }
 
 const show = async(id) =>{

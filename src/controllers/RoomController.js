@@ -43,8 +43,8 @@ RoomController.get('/:id', async (req, res) => {
                                 "file_id": room.file_id,
                                 "id_public": room.id_public,
                                 "date": room.date,
-                                "nome": infoFile.nome,
-                                "result": infoFile.result,
+                                "nome": infoFile ? infoFile.nome : null,
+                                "result": infoFile ? infoFile.result : null,
                                 "dono": dono.id_client
                             })
                         }

@@ -22,7 +22,7 @@ FileController.get('/:id', async (req, res) => {
     try {
         res.status(201).json(await FileService.fileClient(id))
     } catch (error) {
-        res.status(500).json({ error: 'FileService.create() is not working' })
+        res.status(500).json({ error: 'FileService.fileClient() is not working' })
     }
 })
 

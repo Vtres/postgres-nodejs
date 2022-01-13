@@ -17,14 +17,19 @@ const filebyContentId = async(id)=>{
     return response
 }
 
-// const fileClient = async (id) => {
-//     const fileInsert =  await FileRepository.fileByIdClient(id)
-//     return fileInsert
-// }
+const fileClient = async (id) => {
+    const fileInsert =  await FileRepository.fileByIdClient(id)
+    return fileInsert
+}
 const searchFileById = async(id)=>{
     const response = await FileRepository.searchFileById(id)
     return response
 }
+
+const imgClient = async(id)=>{
+    const response = await FileRepository.imgClient(id)
+    return response
+}
 module.exports = {
-   create,fileCreatePost,searchFileById,filebyContentId
+   create,fileCreatePost,searchFileById,filebyContentId,fileClient,imgClient
 }

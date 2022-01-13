@@ -36,12 +36,12 @@ const remove = async (id) => {
     `, [id])
 }
 
-const update = async ({ id, name, surname, email, senha, nick_name }) => {
+const update = async ({ id, name, surname, email, id_file }) => {
     const response = await Database.query(`
-        update client set name = $1, surname=$2, email=$3, senha=$4, nick_name=$5, date=current_timestamp
-        where user_id = $6 returning *
+        update client set name = $1, surname=$2, email=$3, file_id=$4, date=current_timestamp
+        where user_id = $5 returning *
     `, [
-        name, surname, email, senha, nick_name, id
+        name, surname, email, id_file, id
     ])
     return response.rows[0]
 }

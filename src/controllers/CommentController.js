@@ -6,6 +6,7 @@ const CommentController = Router()
 
 CommentController.post('', async (req, res) => {
     const { message, id_post, id_client } = req.body
+    console.log({ message, id_post, id_client })
     if (!message || !id_post || !id_client) {
         return res.status(400).json({ error: "Não é possivel responder esse post" })
     }

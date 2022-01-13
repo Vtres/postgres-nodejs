@@ -7,7 +7,6 @@ const ContentController = Router()
 ContentController.get('/:id', async (req, res) => {
     const { id } = req.params
     try {
-
         res.status(200).json(await ContentService.list(id))
 
     } catch (error) {
@@ -42,7 +41,7 @@ ContentController.post('', async (req, res) => {
     if (action == 'N') {
         try {
             const existClass = await ContentService.existContentByClassId(id_class)
-            if (existClass) {
+            if (existClass.length>0) {
                 try {
                     res.json(await ContentService.update(text, id_class))
                 } catch (error) {

@@ -13,8 +13,8 @@ const save = async (id_user, title, description) => {
 const createPostResultId = async (id_user, title, description) => {
     const response = await Database.query(`
         INSERT INTO post(
-            title, description_post, id_client
-        )values($1,$2,$3) returning post_id
+            title, description_post, id_client, date_post
+        )values($1,$2,$3,current_timestamp) returning post_id
     `, [title, description, id_user])
     return response.rows[0].post_id;
 }
@@ -46,7 +46,7 @@ const findPostById = async (id) => {
             c.name,
             c.surname
         from post p
-        join files f on p.post_id = f.id_post 
+        left join files f on p.post_id = f.id_post 
         join client c on p.id_client = c.user_id
         where p.post_id = $1
     `, [id])
@@ -54,6 +54,12 @@ const findPostById = async (id) => {
     return response.rows[0]
 }
 
+const findClientById = async (id) => {
+    const response = await Database.query(`
+        SELECT * FROM client where user_id = $1
+    `, [id])
+    return response.rows[0]
+}
 module.exports = {
-    save, createPostResultId, findAll, findById, findPostById
+    save, createPostResultId, findAll, findById, findPostById,findClientById
 }

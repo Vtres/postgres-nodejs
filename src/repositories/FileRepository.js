@@ -25,12 +25,12 @@ const searchFileById = async(id)=>{
     return response.rows[0]
 }
 
-// const fileByIdClient = async(id) =>{
-//     const response = await Database.query(`
-       
-//     `,[id])
-//     return response.rows[0]
-// }
+const fileByIdClient = async(id) =>{
+    const response = await Database.query(`
+        SELECT * FROM files WHERE id = $1
+    `,[id])
+    return response.rows[0]
+}
 
 const filebyContentId = async(id)=>{
     const response = await Database.query(`
@@ -38,7 +38,12 @@ const filebyContentId = async(id)=>{
     `,[id])
     return response.rows
 }
-
+const imgClient = async(id)=>{
+    const response = await Database.query(`
+        SELECT nome, result FROM files WHERE id = $1
+    `,[id])
+    return response.rows[0]
+}
 module.exports = {
-    save,fileSavePost,searchFileById,filebyContentId
+    save,fileSavePost,searchFileById,filebyContentId,fileByIdClient,imgClient
 }

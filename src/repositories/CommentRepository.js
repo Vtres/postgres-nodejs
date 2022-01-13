@@ -1,6 +1,7 @@
 const Database = require('../config/Database')
 
 const save = async (message,id_post,id_client) =>{
+    console.log(message,id_post,id_client)
     const response = await Database.query(`
         INSERT INTO comment(
             message, id_post,id_client, date_comment

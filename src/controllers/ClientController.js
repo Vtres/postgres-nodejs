@@ -33,6 +33,28 @@ ClientController.get('/:id', async (req, res) => {
     }
 })
 
+ClientController.get('/img/:id', async (req, res) => {
+    const { id } = req.params
+
+    try {
+        const user = await ClientService.show(id)
+        if (user.file_id) {
+            try {
+                id_file = user.file_id
+                res.json(await FileService.imgClient(id_file))
+            } catch (error) {
+                res.status(500).json({ error: 'FileService.imgClient() is not working' })
+            }
+
+        } else {
+            res.json(null)
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'ClientService.show() is not working' })
+    }
+
+})
+
 ClientController.post('/:user_id', async (req, res) => {
     const { user_id } = req.params
     var dataAllRoom = []
@@ -151,20 +173,39 @@ ClientController.delete('/:id', async (req, res) => {
 })
 ClientController.put('/:id', async (req, res) => {
     const { id } = req.params
-    const { name, surname, email, senha, nick_name } = req.body
+    const { name, surname, email, nome, result } = req.body
 
-    if (!name || !surname || !email || !senha || !nick_name) {
+    if (!name || !surname || !email) {
         return res.status(400).json({ error: "Há campos não informados" })
     }
 
     try {
         const existsClient = await ClientService.existsById(id)
         if (existsClient) {
-            try {
-                res.json(await ClientService.update({ id, name, surname, email, senha, nick_name }))
-            } catch (error) {
-                res.status(500).json({ error: 'ClientService.destroy() is not working' })
+            if (nome && result) {
+                try {
+                    const id_content = null
+                    const file_id = await FileService.create({ nome, result, id_content })
+                    if (file_id.id) {
+                        try {
+                            const id_file = file_id.id
+                            res.json(await ClientService.update({ id, name, surname, email, id_file }))
+                        } catch (error) {
+                            res.status(500).json({ error: ' ClientService.update() is not working' })
+                        }
+                    }
+                } catch (error) {
+                    res.status(500).json({ error: 'FileService.create() is not working' })
+                }
+            } else {
+                try {
+                    const id_file = null
+                    res.json(await ClientService.update({ id, name, surname, email, id_file }))
+                } catch (error) {
+                    res.status(500).json({ error: ' ClientService.update() is not working' })
+                }
             }
+
         } else {
             res.status(404).json({ error: `ID: ${id} not found` })
         }
