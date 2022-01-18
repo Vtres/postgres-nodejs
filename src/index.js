@@ -10,6 +10,8 @@ app.use(express.urlencoded({limit: '900mb', extended: true, parameterLimit:50000
 app.use(cors())
 app.use(routes)
 
-app.listen(8080, () =>{
-    console.log("Servidor Ligado")
-});
+// app.listen(8080, () =>{
+//     console.log("Servidor Ligado")
+// });
+
+app.listen(process.env.PORT || 8080)
